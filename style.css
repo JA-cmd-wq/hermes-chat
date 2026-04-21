@@ -35,7 +35,7 @@
   --color-code-header:     #2A2A2A;
 
   /* 尺寸 */
-  --chat-max-width:        800px;
+  --chat-max-width:        740px;
   --radius-sm:             8px;
   --radius-md:             12px;
   --radius-lg:             20px;
@@ -156,7 +156,7 @@ body {
   padding: 72px 20px 100px 20px; /* 给 navbar 和 input 留出空间 */
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 28px;
   scroll-behavior: smooth;
 }
 
@@ -235,27 +235,30 @@ body {
   background: var(--color-accent-hover);
 }
 
-/* 消息气泡通用 */
+/* 消息通用 - 居中限宽 */
 .message {
   display: flex;
   flex-direction: column;
   animation: messageIn 0.3s ease-out;
   position: relative;
   width: 100%;
+  max-width: var(--chat-max-width);
+  margin: 0 auto;
 }
 
 .message-content {
   font-size: 15px;
   font-weight: 400;
   line-height: 1.75;
+  word-wrap: break-word;
 }
 
 .message-time {
-  font-size: 12px;
-  color: var(--color-text-secondary);
-  align-self: flex-end;
-  margin-top: 4px;
-  line-height: 1.0;
+  font-size: 11px;
+  color: var(--color-text-placeholder);
+  margin-top: 6px;
+  line-height: 1;
+  letter-spacing: 0.03em;
 }
 
 /* 用户消息 */
@@ -264,53 +267,57 @@ body {
 }
 
 .message.user .message-bubble {
-  max-width: 75%;
+  max-width: 85%;
   background: var(--color-accent);
   color: var(--color-text-on-accent);
-  padding: 12px 16px;
-  border-radius: var(--radius-md) var(--radius-md) 4px var(--radius-md);
+  padding: 10px 16px;
+  border-radius: 18px 18px 4px 18px;
   word-wrap: break-word;
   white-space: pre-wrap;
 }
 
-/* 助手消息 */
+.message.user .message-content {
+  line-height: 1.55;
+}
+
+/* 助手消息 - Claude 风格纯文本无背景 */
 .message.assistant {
   align-items: flex-start;
 }
 
-.message.assistant .message-bubble {
-  max-width: 85%;
-  background: var(--color-bg-tertiary);
-  color: var(--color-text-primary);
-  padding: 16px 20px;
-  border-radius: 4px var(--radius-md) var(--radius-md) var(--radius-md);
-  position: relative;
+.message-author {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
 }
 
-.assistant-icon {
-  position: absolute;
-  top: -12px;
-  left: -12px;
-  width: 24px;
-  height: 24px;
-  background: var(--color-bg-primary);
-  border-radius: 50%;
-  padding: 2px;
-  border: 1px solid var(--color-border);
+.message-author svg {
+  color: var(--color-accent);
+}
+
+.message.assistant .message-bubble {
+  max-width: 100%;
+  width: 100%;
+  background: transparent;
+  color: var(--color-text-primary);
+  padding: 0;
+  border-radius: 0;
 }
 
 /* 错误消息 */
 .message.error .message-bubble {
-  max-width: 85%;
-  margin: 0 auto;
+  max-width: 100%;
+  width: 100%;
   background: var(--color-error-bg);
-  border-left: 4px solid var(--color-error);
+  border-left: 3px solid var(--color-error);
   color: var(--color-text-primary);
-  padding: 12px 16px;
-  border-radius: 4px var(--radius-md) var(--radius-md) 4px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
 }
 
 /* Markdown 样式 */
@@ -478,12 +485,13 @@ body {
 
 .footer-note {
   text-align: center;
-  font-size: 12px;
-  color: var(--color-text-secondary);
+  font-size: 11px;
+  color: var(--color-text-placeholder);
   margin-top: 8px;
   max-width: var(--chat-max-width);
   margin-left: auto;
   margin-right: auto;
+  letter-spacing: 0.02em;
 }
 
 /* ============================================================

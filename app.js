@@ -340,8 +340,8 @@ function addMessage(role, content) {
         div.innerHTML = `
             <div class="message-bubble">
                 <div class="message-content">${escapeHTML(content)}</div>
-                <div class="message-time">${timeStr}</div>
             </div>
+            <div class="message-time">${timeStr}</div>
         `;
     } else if (role === 'error') {
         div.innerHTML = `
@@ -361,8 +361,11 @@ function addLoadingBubble() {
     div.className = 'message assistant';
     div.id = id;
     div.innerHTML = `
+        <div class="message-author">
+            <svg viewBox="0 0 32 32" width="14" height="14"><g stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="16" y1="4" x2="16" y2="28" /><path d="M16 8 C12 6, 6 6, 4 10 C6 11, 10 10, 16 11" /><path d="M16 8 C20 6, 26 6, 28 10 C26 11, 22 10, 16 11" /><path d="M12 12 C16 10, 20 14, 16 16 C12 18, 12 22, 16 24" /><path d="M20 12 C16 10, 12 14, 16 16 C20 18, 20 22, 16 24" /></g></svg>
+            <span>Hermes</span>
+        </div>
         <div class="message-bubble">
-            <div class="assistant-icon"><svg viewBox="0 0 32 32" width="16" height="16"><g stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="16" y1="4" x2="16" y2="28" /><path d="M16 8 C12 6, 6 6, 4 10 C6 11, 10 10, 16 11" /><path d="M16 8 C20 6, 26 6, 28 10 C26 11, 22 10, 16 11" /><path d="M12 12 C16 10, 20 14, 16 16 C12 18, 12 22, 16 24" /><path d="M20 12 C16 10, 12 14, 16 16 C20 18, 20 22, 16 24" /></g></svg></div>
             <div class="typing-dots"><span></span><span></span><span></span></div>
         </div>
     `;
@@ -381,11 +384,14 @@ function createAssistantBubble() {
     div.className = 'message assistant';
     div.id = id;
     div.innerHTML = `
-        <div class="message-bubble">
-            <div class="assistant-icon"><svg viewBox="0 0 32 32" width="16" height="16"><g stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="16" y1="4" x2="16" y2="28" /><path d="M16 8 C12 6, 6 6, 4 10 C6 11, 10 10, 16 11" /><path d="M16 8 C20 6, 26 6, 28 10 C26 11, 22 10, 16 11" /><path d="M12 12 C16 10, 20 14, 16 16 C12 18, 12 22, 16 24" /><path d="M20 12 C16 10, 12 14, 16 16 C20 18, 20 22, 16 24" /></g></svg></div>
-            <div class="message-content assistant-content markdown-body"></div>
-            <div class="message-time" style="display:none;"></div>
+        <div class="message-author">
+            <svg viewBox="0 0 32 32" width="14" height="14"><g stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="16" y1="4" x2="16" y2="28" /><path d="M16 8 C12 6, 6 6, 4 10 C6 11, 10 10, 16 11" /><path d="M16 8 C20 6, 26 6, 28 10 C26 11, 22 10, 16 11" /><path d="M12 12 C16 10, 20 14, 16 16 C12 18, 12 22, 16 24" /><path d="M20 12 C16 10, 12 14, 16 16 C20 18, 20 22, 16 24" /></g></svg>
+            <span>Hermes</span>
         </div>
+        <div class="message-bubble">
+            <div class="message-content assistant-content markdown-body"></div>
+        </div>
+        <div class="message-time" style="display:none;"></div>
     `;
     els.messagesContainer.appendChild(div);
     return id;
@@ -395,12 +401,12 @@ function updateAssistantBubble(id, content, isStreaming) {
     const el = document.getElementById(id);
     if (!el) return;
     
-    const contentEl = el.querySelector('.message-content');
+    const contentEl = el.querySelector('.assistant-content');
     const timeEl = el.querySelector('.message-time');
     
     contentEl.innerHTML = renderMarkdown(content) + (isStreaming ? '<span class="streaming-cursor">▎</span>' : '');
     
-    if (!isStreaming) {
+    if (!isStreaming && timeEl) {
         timeEl.textContent = formatTime(new Date());
         timeEl.style.display = 'block';
     }
