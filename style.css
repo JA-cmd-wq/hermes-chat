@@ -267,19 +267,18 @@ body {
 }
 
 .message.user .message-bubble {
-  width: max-content;
   max-width: min(560px, 80%);
   background: var(--color-accent);
   color: var(--color-text-on-accent);
   padding: 10px 14px;
   border-radius: 16px 16px 4px 16px;
-  word-break: break-word;
-  white-space: pre-wrap;
 }
 
 .message.user .message-content {
   line-height: 1.55;
   font-size: 15px;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 /* 助手消息 - Claude 风格纯文本无背景 */
