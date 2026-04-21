@@ -267,17 +267,20 @@ body {
 }
 
 .message.user .message-bubble {
-  max-width: 85%;
+  width: fit-content;
+  max-width: min(560px, 80%);
   background: var(--color-accent);
   color: var(--color-text-on-accent);
-  padding: 10px 16px;
-  border-radius: 18px 18px 4px 18px;
+  padding: 10px 14px;
+  border-radius: 16px 16px 4px 16px;
   word-wrap: break-word;
+  overflow-wrap: anywhere;
   white-space: pre-wrap;
 }
 
 .message.user .message-content {
   line-height: 1.55;
+  font-size: 15px;
 }
 
 /* 助手消息 - Claude 风格纯文本无背景 */
@@ -695,6 +698,34 @@ body {
 
 /* 移动端适配 */
 @media (max-width: 600px) {
-  .message.user .message-bubble { max-width: 85%; }
-  .message.assistant .message-bubble { max-width: 95%; }
+  .messages-container {
+    padding: 68px 16px 100px 16px;
+    gap: 24px;
+  }
+  .message.user .message-bubble {
+    max-width: 85%;
+    padding: 9px 13px;
+    border-radius: 14px 14px 4px 14px;
+  }
+  .message.user .message-content,
+  .message.assistant .message-content {
+    font-size: 14.5px;
+    line-height: 1.7;
+  }
+  .message-author {
+    font-size: 11.5px;
+  }
+  .navbar {
+    padding: 0 14px;
+  }
+  .nav-title {
+    font-size: 16px;
+  }
+  .input-area {
+    padding: 10px 14px;
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
+  }
+  .footer-note {
+    font-size: 10.5px;
+  }
 }
