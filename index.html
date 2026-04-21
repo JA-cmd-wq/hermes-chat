@@ -42,7 +42,14 @@
         <div class="welcome-screen" id="welcomeScreen">
             <img src="favicon.svg" alt="Hermes Agent" class="welcome-logo">
             <h2>与 Hermes Agent 对话</h2>
-            <p>在设置中配置 API 地址后开始</p>
+            <p class="welcome-hint">
+                点击右上角 ⚙️ 设置 API 地址后开始<br>
+                <span class="welcome-sub">地址从服务器获取，密钥已预填</span>
+            </p>
+            <div class="quick-connect">
+                <input type="text" placeholder="粘贴 API 地址 https://xxxx.trycloudflare.com" id="quick-api-input">
+                <button id="quickConnectBtn">连接</button>
+            </div>
         </div>
     </main>
 
@@ -72,6 +79,7 @@
             <div class="setting-item">
                 <label class="setting-label" for="apiUrl">API 地址</label>
                 <input type="text" id="apiUrl" class="setting-input" placeholder="例如: http://localhost:8642" autocomplete="off">
+                <p class="api-url-hint">地址格式: https://xxxx.trycloudflare.com（每次重启会变，从服务器获取）</p>
             </div>
             <div class="setting-item">
                 <label class="setting-label" for="apiKey">API 密钥</label>

@@ -13,19 +13,32 @@
 - **移动端优先**：完美适配手机浏览器与安全区。
 - **极致安全**：API 密钥仅存在于浏览器的 `localStorage` 中，所有通信直接通过你的设备发起。
 
-## 🚀 快速开始
+## 🚀 使用方法
 
-本项目无需任何编译，直接双击 `index.html` 即可在浏览器中预览。
+在线地址：**https://JA-cmd-wq.github.io/hermes-chat/**
 
-1. 打开 [index.html](index.html)。
-2. 点击右上角的 **齿轮(⚙️)** 图标进入设置。
-3. 填入你的 Hermes API 地址（例如：`http://localhost:8642`）。
-4. 填入你的 API 密钥（如果有）。
-5. 点击**测试连接**，如果显示绿灯，即可开始对话！
+### 方式一：直接粘贴地址（最快）
+1. 打开网页
+2. 在欢迎页面的输入框中粘贴 API 地址
+3. 点击"连接"，开始对话
 
-> **URL 快速配置参数**：
-> 也可以通过 URL 传参自动配置并测试连接：
-> `https://your-domain.github.io/?api=http://192.168.1.100:8642&key=your-key`
+### 方式二：URL 参数（推荐分享给别人）
+直接打开带参数的链接，页面会自动配置并清除地址栏中的敏感信息：
+```
+https://JA-cmd-wq.github.io/hermes-chat/?api=https://你的地址.trycloudflare.com&key=hermes-orangepi-2026
+```
+
+### 方式三：手动设置
+1. 点击右上角 ⚙️ 打开设置面板
+2. 填入 API 地址
+3. API 密钥已预填为 `hermes-orangepi-2026`
+4. 点击"测试连接"，绿灯亮起即可
+
+### 获取 API 地址
+每次服务器重启后，Cloudflare Tunnel 会分配新地址。在服务器终端执行：
+```bash
+cat ~/.hermes/tunnel-url.txt
+```
 
 ## 🌍 部署到 GitHub Pages
 

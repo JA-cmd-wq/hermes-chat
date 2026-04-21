@@ -14,7 +14,7 @@ const state = {
 // 配置（从 localStorage 读取）
 const config = {
     apiUrl: localStorage.getItem('hermes_api_url') || '',
-    apiKey: localStorage.getItem('hermes_api_key') || '',
+    apiKey: localStorage.getItem('hermes_api_key') || 'hermes-orangepi-2026',
     systemPrompt: localStorage.getItem('hermes_system_prompt') || '你是 Hermes Agent，一个强大的 AI 助手。请用中文回答。',
 };
 
@@ -36,7 +36,10 @@ const els = {
     testConnBtn: document.getElementById('testConnBtn'),
     testConnStatus: document.getElementById('testConnStatus'),
     togglePasswordBtn: document.getElementById('togglePasswordBtn'),
-    clearBtn: document.getElementById('clearBtn')
+    clearBtn: document.getElementById('clearBtn'),
+    footerNote: document.querySelector('.footer-note'),
+    quickApiInput: document.getElementById('quick-api-input'),
+    quickConnectBtn: document.getElementById('quickConnectBtn')
 };
 
 // ==========================================
@@ -63,6 +66,11 @@ function init() {
         configChanged = true;
     }
 
+    // 读取后清除 URL 参数（隐藏密钥）
+    if (configChanged) {
+        window.history.replaceState({}, '', window.location.pathname);
+    }
+
     // 填充设置表单
     els.apiUrl.value = config.apiUrl;
     els.apiKey.value = config.apiKey;
@@ -72,6 +80,10 @@ function init() {
         testConnection(config.apiUrl, config.apiKey, false);
     } else {
         updateStatusIndicator('disconnected');
+        // 首次打开（从未配置过 API 地址），自动弹出设置
+        if (!localStorage.getItem('hermes_api_url')) {
+            setTimeout(() => openSettings(), 300);
+        }
     }
 
     renderWelcome();
@@ -104,6 +116,20 @@ function bindEvents() {
     });
     
     els.clearBtn.addEventListener('click', clearChat);
+
+    // 状态灯点击 → 打开设置
+    els.statusIndicator.addEventListener('click', openSettings);
+    els.statusIndicator.style.cursor = 'pointer';
+
+    // 欢迎页快捷连接
+    if (els.quickConnectBtn) {
+        els.quickConnectBtn.addEventListener('click', quickConnect);
+    }
+    if (els.quickApiInput) {
+        els.quickApiInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') quickConnect();
+        });
+    }
 
     // 设置抽屉
     els.settingsBtn.addEventListener('click', openSettings);
@@ -466,13 +492,68 @@ async function testConnection(url, key, showUI) {
 function updateStatusIndicator(status) {
     els.statusIndicator.className = 'status-dot ' + status;
     let titles = {
-        'disconnected': '未配置',
+        'disconnected': '未配置（点击设置）',
         'connecting': '连接中...',
         'connected': '已连接',
-        'error': '连接失败'
+        'error': '连接失败（点击设置）'
     };
     els.statusIndicator.title = titles[status] || '';
+    state.isConnected = (status === 'connected');
+
+    // 同步更新底部信息
+    updateFooterNote();
 }
+
+function updateFooterNote() {
+    if (!els.footerNote) return;
+    if (state.isConnected && config.apiUrl) {
+        const short = truncateUrl(config.apiUrl, 30);
+        els.footerNote.textContent = `Hermes Agent · 已连接 ${short}`;
+    } else {
+        els.footerNote.textContent = 'Hermes Agent · 未连接';
+    }
+}
+
+function truncateUrl(url, maxLen) {
+    try {
+        const u = new URL(url);
+        let host = u.hostname;
+        if (host.length > maxLen) {
+            return host.slice(0, 12) + '...' + host.slice(-18);
+        }
+        return host;
+    } catch {
+        return url.length > maxLen ? url.slice(0, maxLen) + '...' : url;
+    }
+}
+
+// 欢迎页快捷连接
+function quickConnect() {
+    const input = els.quickApiInput;
+    if (!input) return;
+    const url = input.value.trim();
+    if (!url) { input.focus(); return; }
+
+    config.apiUrl = url;
+    localStorage.setItem('hermes_api_url', url);
+
+    // 确保密钥已保存
+    if (!localStorage.getItem('hermes_api_key')) {
+        localStorage.setItem('hermes_api_key', config.apiKey);
+    }
+
+    // 填充设置表单
+    els.apiUrl.value = url;
+
+    // 隐藏欢迎页，聚焦聊天输入
+    if (els.welcomeScreen) els.welcomeScreen.style.display = 'none';
+    els.userInput.focus();
+
+    // 测试连接
+    testConnection(url, config.apiKey, false);
+}
+// 暴露给 HTML onclick
+window.quickConnect = quickConnect;
 
 // Markdown 解析配置
 function renderMarkdown(content) {
