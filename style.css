@@ -273,8 +273,7 @@ body {
   color: var(--color-text-on-accent);
   padding: 10px 14px;
   border-radius: 16px 16px 4px 16px;
-  word-wrap: break-word;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
   white-space: pre-wrap;
 }
 
