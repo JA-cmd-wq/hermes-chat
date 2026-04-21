@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flex Bug Test</title>
+<style>
+  body { background: #1a1a1a; color: white; font-family: sans-serif; padding: 20px; font-size: 16px; }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+    max-width: 400px;
+    background: #242424;
+    padding: 20px;
+    border-radius: 8px;
+  }
+
+  .bubble {
+    padding: 10px 14px;
+    border-radius: 16px 16px 4px 16px;
+    word-break: break-word;
+    white-space: pre-wrap;
+    line-height: 1.5;
+  }
+
+  /* 1. 原版：用 flex-end，没有限制宽度，中文会变单列 */
+  .bad {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .bad .bubble {
+    max-width: 80%;
+    background: #D97757;
+  }
+
+  /* 2. 当前版：加了 width: max-content (v1.3.4 的做法) */
+  .fix-a {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .fix-a .bubble {
+    width: max-content;
+    max-width: 80%;
+    background: #4CAF50;
+  }
+
+  /* 3. 终极版：完全抛弃 flex-end，用朴素的 text-align: right + inline-block */
+  .fix-b {
+    text-align: right;
+  }
+  .fix-b .bubble {
+    display: inline-block;
+    text-align: left;
+    max-width: 80%;
+    background: #2196F3;
+  }
+</style>
+</head>
+<body>
+  <h3>最小测试例 (浏览器 Flex 换行 Bug)</h3>
+  
+  <div class="container">
+    <div>
+      <p style="color:#D97757; font-size:12px; margin-bottom:5px;">1. 原版 (纯 Flex) - 在部分浏览器(如 Safari)会变柱子</p>
+      <div class="bad">
+        <div class="bubble">你好啊我是测试</div>
+      </div>
+    </div>
+    
+    <div>
+      <p style="color:#4CAF50; font-size:12px; margin-bottom:5px;">2. 当前代码 (v1.3.4) - Flex + max-content</p>
+      <div class="fix-a">
+        <div class="bubble">你好啊我是测试</div>
+      </div>
+    </div>
+
+    <div>
+      <p style="color:#2196F3; font-size:12px; margin-bottom:5px;">3. 终极兼容版 - 放弃 flex 采用 inline-block (最稳妥)</p>
+      <div class="fix-b">
+        <div class="bubble">你好啊我是测试</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
