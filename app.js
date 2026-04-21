@@ -145,7 +145,10 @@ function bindEvents() {
     els.togglePasswordBtn.addEventListener('click', () => {
         const type = els.apiKey.getAttribute('type') === 'password' ? 'text' : 'password';
         els.apiKey.setAttribute('type', type);
-        els.togglePasswordBtn.textContent = type === 'password' ? '👁' : '🚫';
+        const icon = type === 'password' 
+            ? '<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>'
+            : '<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
+        els.togglePasswordBtn.innerHTML = icon;
     });
 }
 
@@ -343,8 +346,7 @@ function addMessage(role, content) {
     } else if (role === 'error') {
         div.innerHTML = `
             <div class="message-bubble">
-                <span>⚠️</span>
-                <div class="message-content">${escapeHTML(content)}</div>
+                <div class="message-content" style="color:var(--color-error)">${escapeHTML(content)}</div>
             </div>
         `;
     }
@@ -360,7 +362,7 @@ function addLoadingBubble() {
     div.id = id;
     div.innerHTML = `
         <div class="message-bubble">
-            <div class="assistant-icon">☤</div>
+            <div class="assistant-icon"><svg viewBox="0 0 32 32" width="16" height="16"><g stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="16" y1="4" x2="16" y2="28" /><path d="M16 8 C12 6, 6 6, 4 10 C6 11, 10 10, 16 11" /><path d="M16 8 C20 6, 26 6, 28 10 C26 11, 22 10, 16 11" /><path d="M12 12 C16 10, 20 14, 16 16 C12 18, 12 22, 16 24" /><path d="M20 12 C16 10, 12 14, 16 16 C20 18, 20 22, 16 24" /></g></svg></div>
             <div class="typing-dots"><span></span><span></span><span></span></div>
         </div>
     `;
@@ -380,7 +382,7 @@ function createAssistantBubble() {
     div.id = id;
     div.innerHTML = `
         <div class="message-bubble">
-            <div class="assistant-icon">☤</div>
+            <div class="assistant-icon"><svg viewBox="0 0 32 32" width="16" height="16"><g stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="16" y1="4" x2="16" y2="28" /><path d="M16 8 C12 6, 6 6, 4 10 C6 11, 10 10, 16 11" /><path d="M16 8 C20 6, 26 6, 28 10 C26 11, 22 10, 16 11" /><path d="M12 12 C16 10, 20 14, 16 16 C12 18, 12 22, 16 24" /><path d="M20 12 C16 10, 12 14, 16 16 C20 18, 20 22, 16 24" /></g></svg></div>
             <div class="message-content assistant-content markdown-body"></div>
             <div class="message-time" style="display:none;"></div>
         </div>
