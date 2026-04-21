@@ -267,6 +267,7 @@ body {
 }
 
 .message.user .message-bubble {
+  width: max-content;
   max-width: min(560px, 80%);
   background: var(--color-accent);
   color: var(--color-text-on-accent);
