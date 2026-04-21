@@ -267,13 +267,12 @@ body {
 }
 
 .message.user .message-bubble {
-  width: fit-content;
   max-width: min(560px, 80%);
   background: var(--color-accent);
   color: var(--color-text-on-accent);
   padding: 10px 14px;
   border-radius: 16px 16px 4px 16px;
-  overflow-wrap: break-word;
+  word-break: break-word;
   white-space: pre-wrap;
 }
 
